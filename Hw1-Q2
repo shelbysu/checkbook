@@ -1,0 +1,96 @@
+#include <iostream>
+using namespace std;
+#include <string>
+class Check{
+    public:
+        Check(){
+            checknum = 0;
+            checkmemo = "";
+            checkamount = 0;
+            //allchecks++;
+        }
+        int getnum(){return checknum;}
+        float getamount(){return checkamount;}
+        string getmemo(){return checkmemo;}
+
+        void setnum(int num){checknum = num;}
+        void setamount(float amount){checkamount = amount;}
+        void setmemo(string memo){checkmemo = memo;}
+
+    private:
+        int checknum;
+        string checkmemo;
+        float checkamount;
+       // static int number;
+};
+
+class checkbook{
+public:
+    checkbook():balance(0),numofchecks(0){}
+    checkbook(float bal):balance(bal),numofchecks(0){}
+    void deposit(float amount);
+    void displaychecks();
+    Check checkarray[5];
+    bool writecheck(float amount);
+    static int getallchecks(){return allchecks;}
+private:
+    int balance;
+    float lastDeposit;
+    int numofchecks;
+    int checklimit = 5;
+    static int allchecks;
+};
+
+int checkbook::allchecks=0;
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+
+    checkbook cb1(1000),cb2(500);
+    for(int i=0;i<10; i++){
+        cb1.writecheck(150);
+        cb2.writecheck(130);
+    }
+
+    cout<<"cb1 check details"<<endl;
+    cb1.displaychecks();
+    cout<<"cb2 check details"<<endl;
+    cb2.displaychecks();
+
+    cout<<cb1.getallchecks()<<endl;
+    cout<<cb2.getallchecks()<<endl;
+    return 0;
+}
+
+void checkbook::displaychecks() {
+    for (int i = numofchecks-1; i>=0;i--){
+        cout<< " " << checkarray[i].getnum()<<
+         " " << checkarray[i].getmemo()<<
+         " " << checkarray[i].getamount()<<endl;
+    }
+}
+
+void checkbook::deposit(float amount) {
+    balance +=amount;
+    lastDeposit = amount;
+}
+
+bool checkbook::writecheck(float amount) {
+    string s;
+    if  (amount <= balance&& numofchecks < 5 && allchecks < 10){
+
+    cout << "memo?" << endl;
+    cin >> s;
+    checkarray[numofchecks].setmemo(s);
+    checkarray[numofchecks].setnum(numofchecks);
+    checkarray[numofchecks].setamount(amount);
+    lastDeposit = amount;
+    numofchecks++;
+    allchecks++;
+    balance -= amount;
+        return 1;
+    } else
+     {
+            return 0;
+    }
+}
